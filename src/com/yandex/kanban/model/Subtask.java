@@ -8,19 +8,28 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
+    public Subtask copy() {
+        Subtask copy = new Subtask(
+                this.getName(),
+                this.getDescription(),
+                this.getStatus(),
+                this.epicId
+        );
+        copy.setId(this.getId());
+        copy.setViews(this.getViews());
+        return copy;
+    }
+
     public int getEpicId() {
         return epicId;
     }
 
     @Override
     public String toString() {
-        return "Subtask:\n" +
-                "  ID: " + id + "\n" +
-                "  Epic ID: " + epicId + "\n" +
-                "  Name: '" + name + "'\n" +
-                "  Description: '" + description + "'\n" +
-                "  Status: " + status;
-        }
+        return String.format(
+                "Subtask [id=%d, name='%s', description='%s', status=%s, views=%d, epicId=%d]",
+                getId(), getName(), getDescription(), getStatus(), getViews(), epicId
+        );
     }
-
+}
 

@@ -1,5 +1,6 @@
 package com.yandex.kanban.model;
 
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class Epic extends Task {
     }
 
     public List<Integer> getSubtaskIds() {
-        return subtaskIds;
+        return Collections.unmodifiableList(subtaskIds);
     }
 
     public void addSubtask(int subtaskId) {
@@ -23,12 +24,20 @@ public class Epic extends Task {
     }
 
     @Override
+    public Epic copy() {
+        Epic copy = new Epic(this.getName(), this.getDescription());
+        copy.setStatus(this.getStatus());
+        copy.subtaskIds.addAll(this.subtaskIds);
+        copy.setViews(this.getViews());
+        return copy;
+    }
+
+    @Override
     public String toString() {
-        return "Epic:\n" +
-                "  ID = " + id + ",\n" +
-                "  Name = '" + name + "',\n" +
-                "  Description = '" + description + "',\n" +
-                "  Status = " + status + ",\n" +
-                "  SubtaskIds = " + subtaskIds;
+        return String.format(
+                "Epic [id=%d, name='%s', description='%s', status=%s, views=%d, subtaskIds=%s]",
+                getId(), getName(), getDescription(), getStatus(), getViews(), subtaskIds
+        );
     }
 }
+
