@@ -1,6 +1,11 @@
 package com.yandex.kanban.service;
 
-public class Managers {
+public final class Managers { // Исправил, добавил конструктор Managers()
+
+    private Managers() {
+        throw new UnsupportedOperationException("Утилитарный класс");
+    }
+
     private static final HistoryManager DEFAULT_HISTORY_MANAGER = new InMemoryHistoryManager();
     private static final TaskManager DEFAULT_TASK_MANAGER = new InMemoryTaskManager();
 

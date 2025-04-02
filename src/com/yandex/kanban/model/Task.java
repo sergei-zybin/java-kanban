@@ -7,7 +7,7 @@ public class Task {
     private String name;
     private String description;
     private Status status;
-    private int views;
+
 
     public Task(String name, String description, Status status) {
         this.name = name;
@@ -26,12 +26,7 @@ public class Task {
     public Task copy() {
         Task copy = new Task(this.name, this.description, this.status);
         copy.setId(this.id);
-        copy.views = this.views;
         return copy;
-    }
-
-    public void setViews(int views) {
-        this.views = views;
     }
 
     @Override
@@ -71,19 +66,11 @@ public class Task {
         this.status = status;
     }
 
-    public int getViews() {
-        return views;
-    }
-
-    public void incrementViews() {
-        views++;
-    }
-
     @Override
     public String toString() {
         return String.format(
-                "Task [id=%d, name='%s', description='%s', status=%s, views=%d]",
-                id, name, description, status, views
+                "Task [id=%d, name='%s', description='%s', status=%s]",
+                id, name, description, status
         );
     }
 }

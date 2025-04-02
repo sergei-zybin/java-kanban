@@ -48,7 +48,7 @@ public class Main {
     }
 
     private static void printMenu() {
-        System.out.println("*** ТРЕКЕР ЗАДАЧ v 0.2 ***");
+        System.out.println("*** ТРЕКЕР ЗАДАЧ v 0.2.1 ***");
         String[][] menuColumns = {
                 {"[ 1] Создать задачу",    "[ 8] Все задачи",         "[15] Удалить подзадачу"},
                 {"[ 2] Создать подзадачу", "[ 9] Все подзадачи",      "[16] Удалить эпик"},
@@ -287,6 +287,28 @@ public class Main {
         };
     }
 
+    private static void showHistory() {
+        List<Task> history = manager.getHistory();
+        System.out.println("\nПоследние 10 просмотренных задач:");
+        if (history.isEmpty()) {
+            System.out.println("История пуста.");
+            return;
+        }
+        int counter = 1;
+        for (Task task : history) {
+            String type =
+                    task instanceof Subtask ? "Subtask" :
+                            task instanceof Epic ? "Epic" : "Task";
+
+            System.out.printf("%2d. ID:%-4d [%s] %s%n",
+                    counter++,
+                    task.getId(),
+                    type,
+                    task.getName()
+            );
+        }
+    }
+
     private static void createTestData() {
         manager.clearAll();
         Epic epic = new Epic("Epic", "Desc");
@@ -313,24 +335,6 @@ public class Main {
             manager.createTask(task);
         }
         System.out.println("Тестовые задачи загружены");
-    }
-
-    private static void showHistory() {
-        List<Task> history = manager.getHistory();
-        System.out.println("\nПоследние 10 просмотренных задач:");
-        if (history.isEmpty()) {
-            System.out.println("История пуста.");
-            return;
-        }
-        int counter = 1;
-        for (Task task : history) {
-            System.out.printf("%2d. ID:%-4d %s (просмотров: %d)%n",
-                    counter++,
-                    task.getId(),
-                    task.getName(),
-                    task.getViews()
-            );
-        }
     }
 }
 

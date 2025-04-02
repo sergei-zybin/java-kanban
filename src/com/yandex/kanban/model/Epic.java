@@ -26,17 +26,17 @@ public class Epic extends Task {
     @Override
     public Epic copy() {
         Epic copy = new Epic(this.getName(), this.getDescription());
+        copy.setId(this.getId());
         copy.setStatus(this.getStatus());
         copy.subtaskIds.addAll(this.subtaskIds);
-        copy.setViews(this.getViews());
         return copy;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "Epic [id=%d, name='%s', description='%s', status=%s, views=%d, subtaskIds=%s]",
-                getId(), getName(), getDescription(), getStatus(), getViews(), subtaskIds
+                "Epic [id=%d, name='%s', description='%s', status=%s, subtaskIds=%s]",
+                getId(), getName(), getDescription(), getStatus(), subtaskIds
         );
     }
 }

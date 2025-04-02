@@ -16,7 +16,6 @@ class TaskManagerTests {
     void setUp() {
         manager = Managers.getDefault();
         HistoryManager historyManager = Managers.getDefaultHistory();
-        historyManager.clear();
         manager.clearAll();
     }
 

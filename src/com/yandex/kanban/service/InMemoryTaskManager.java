@@ -1,6 +1,7 @@
 package com.yandex.kanban.service;
 
 import com.yandex.kanban.model.*;
+
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -21,9 +22,9 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTask(int id) {
+    public Task getTask(int id) { // Убрал избыточную проверку null
         Task task = tasks.get(id);
-        if (task != null) historyManager.add(task);
+        historyManager.addTask(task);
         return task;
     }
 
@@ -75,22 +76,23 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask getSubtask(int id) {
         Subtask subtask = subtasks.get(id);
-        if (subtask != null) historyManager.add(subtask);
+        historyManager.addTask(subtask);
         return subtask;
     }
 
     @Override
     public Integer createSubtask(Subtask subtask) {
-
         Subtask copy = subtask.copy();
 
         if (copy.getId() == copy.getEpicId()) {
             throw new IllegalArgumentException("Подзадача не может быть своим эпиком!");
         }
+
         Epic epic = epics.get(copy.getEpicId());
         if (epic == null) {
             throw new IllegalArgumentException("Эпик с ID " + copy.getEpicId() + " не найден!");
         }
+
         if (copy.getId() != 0) {
             if (subtasks.containsKey(copy.getId()) || tasks.containsKey(copy.getId())) {
                 throw new IllegalArgumentException("ID " + copy.getId() + " уже занят!");
@@ -99,6 +101,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             copy.setId(nextId++);
         }
+
         subtasks.put(copy.getId(), copy);
         epic.addSubtask(copy.getId());
         updateEpicStatus(epic);
@@ -131,6 +134,7 @@ public class InMemoryTaskManager implements TaskManager {
         return new ArrayList<>(epics.values());
     }
 
+    @Override
     public void deleteAllEpics() {
         for (Subtask subtask : subtasks.values()) {
             historyManager.remove(subtask.getId());
@@ -145,7 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpic(int id) {
         Epic epic = epics.get(id);
-        if (epic != null) historyManager.add(epic);
+        historyManager.addTask(epic);
         return epic;
     }
 
