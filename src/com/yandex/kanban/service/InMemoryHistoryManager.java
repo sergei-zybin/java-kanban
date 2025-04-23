@@ -1,33 +1,77 @@
 package com.yandex.kanban.service;
-import com.yandex.kanban.model.*;
 
+import com.yandex.kanban.model.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static final int MAX_HISTORY_SIZE = 10;
-    private final List<Task> history = new LinkedList<>(); // Исправил
+    private static class Node {
+        Task task;
+        Node prev;
+        Node next;
 
-    @Override
-    public void addTask(Task task) { // Исправил скобки и условие вместо цикла
-        if (task == null) {
-            return;
+        public Node(Task task) {
+            this.task = task;
         }
-        if (history.size() == MAX_HISTORY_SIZE) {
-            history.removeFirst();
-        }
-        history.addLast(task.copy());
     }
 
+    private final Map<Integer, Node> historyMap = new HashMap<>();
+    private Node head;
+    private Node tail;
+
     @Override
-    public List<Task> getHistory() { // Историю с deepCopy убрал
-        return new ArrayList<>(history);
+    public void add(Task task) {
+        if (task == null) return;
+        int id = task.getId();
+
+        remove(id);
+
+        Node newNode = new Node(task.copy());
+        linkLast(newNode);
+        historyMap.put(id, newNode);
     }
 
-    // Убрал incrementViews() - с его помощью для самопроверки отображал кол-во просмотров/обращений.
-    // Это было для меню в Main. Но пока, действительно, лишнее.
+    private void linkLast(Node newNode) {
+        if (tail == null) {
+            head = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+        }
+        tail = newNode;
+    }
+
+    private void removeNode(Node node) {
+        if (node == null) return;
+
+        if (node.prev != null) {
+            node.prev.next = node.next;
+        } else {
+            head = node.next;
+        }
+
+        if (node.next != null) {
+            node.next.prev = node.prev;
+        } else {
+            tail = node.prev;
+        }
+    }
 
     @Override
     public void remove(int id) {
-        history.removeIf(task -> task.getId() == id);
+        Node node = historyMap.remove(id);
+        if (node != null) {
+            removeNode(node);
+        }
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        List<Task> result = new ArrayList<>();
+        Node current = head;
+        while (current != null) {
+            result.add(current.task);
+            current = current.next;
+        }
+        return result;
     }
 }

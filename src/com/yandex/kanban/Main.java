@@ -38,6 +38,7 @@ public class Main {
                 case 19 -> deleteAllEpics();
                 case 20 -> createTestData();
                 case 21 -> showHistory();
+                case 22 -> showAllTasksTogether();
                 case 0 -> {
                     System.out.println("\nВыход из приложения");
                     return;
@@ -57,6 +58,7 @@ public class Main {
                 {"[ 5] Показать подзадачу","[12] Обновить подзадачу", "[19] Удалить все эпики"},
                 {"[ 6] Показать эпик",     "[13] Обновить эпик",      "[20] Тестовые данные"},
                 {"[ 7] Подзадачи эпика",   "[14] Удалить задачу",     "[21] История просмотров"},
+                {"",                       "",                        "[22] Все задачи вместе"},
                 {"",                       "",                        "[ 0] Выход"}
         };
 
@@ -269,6 +271,16 @@ public class Main {
         int id = inputId("Введите ID эпика: ");
         System.out.println("Подзадачи эпика:");
         manager.getEpicSubtasks(id).forEach(System.out::println);
+    }
+
+    private static void showAllTasksTogether() {
+        System.out.println("\nВсе задачи (задачи, эпики, подзадачи):");
+        System.out.println("+++  Простые задачи +++ ");
+        manager.getAllTasks().forEach(System.out::println);
+        System.out.println("\n+++  Эпики +++ ");
+        manager.getAllEpics().forEach(System.out::println);
+        System.out.println("\n+++ Подзадачи +++ ");
+        manager.getAllSubtasks().forEach(System.out::println);
     }
 
     private static Status getStatus() {

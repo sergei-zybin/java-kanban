@@ -4,7 +4,7 @@ import com.yandex.kanban.model.Task;
 import java.util.List;
 
 public interface HistoryManager {
-    void addTask(Task task);
-    void remove(int id); // clear() убрал, remove() оставил
+    void add(Task task);
+    void remove(int id);
     List<Task> getHistory();
 }
