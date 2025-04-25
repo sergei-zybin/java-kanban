@@ -20,6 +20,7 @@ class TaskManagerTests {
         ((InMemoryHistoryManager) historyManager).clear();
     }
 
+
     @Test
     void taskEqualityById() {
         Task task1 = new Task("Task1", "Desc", Status.NEW);
