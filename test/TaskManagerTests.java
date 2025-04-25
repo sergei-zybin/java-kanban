@@ -14,8 +14,7 @@ class TaskManagerTests {
 
     @BeforeEach
     void setUp() {
-        manager = Managers.getDefault();
-        manager.clearAll();
+        manager = Managers.getDefault();        
     }
 
     @Test
