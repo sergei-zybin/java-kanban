@@ -86,6 +86,7 @@ class HistoryManagerTests {
 
         assertTrue(manager.getHistory().isEmpty(), "История не пуста после удаления");
     }
+}
 
 
 
