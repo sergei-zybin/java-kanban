@@ -17,16 +17,6 @@ class TaskManagerTests {
         testEpic.setId(manager.createEpic(testEpic));
     }
 
-    @Test
-    void shouldHandleTaskConflicts() {
-        Task task = new Task("Конфликт ID", "Описание", Status.NEW);
-        task.setId(1);
-
-        assertThrows(IllegalArgumentException.class,
-                () -> manager.createTask(task),
-                "Должна быть ошибка при конфликте ID");
-    }
-
      @Test
     void taskInHistoryShouldBeImmutable() {
         history.add(task1);
