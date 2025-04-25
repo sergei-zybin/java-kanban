@@ -1,95 +1,91 @@
-package com.yandex.kanban.service;
+ackage com.yandex.kanban.service;
 
-import com.yandex.kanban.model.Task;
-import com.yandex.kanban.model.Status;
-
-import java.util.List;
-
+import com.yandex.kanban.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HistoryManagerTests {
+    private TaskManager manager;
     private HistoryManager historyManager;
 
     @BeforeEach
     void setUp() {
-        TaskManager manager = Managers.getDefault();
+        manager = Managers.getDefault();
         historyManager = Managers.getDefaultHistory();
         manager.clearAll();
-
+        for (Task task : historyManager.getHistory()) {
+            historyManager.remove(task.getId());
+        }
     }
 
     @Test
     void historyHasNoDuplicates() {
         Task task = new Task("Task", "Desc", Status.NEW);
-        task.setId(1);
+        int taskId = manager.createTask(task);
 
-        historyManager.add(task);
-        historyManager.add(task);
-        historyManager.add(task);
+        manager.getTask(taskId);
+        manager.getTask(taskId);
+        manager.getTask(taskId);
 
-        List<Task> history = historyManager.getHistory();
-        assertEquals(1, history.size(), "История должна содержать только одну запись");
-        assertEquals(task.getId(), history.getFirst().getId());
+        List<Task> history = manager.getHistory();
+        assertEquals(1, history.size(), "История содержит дубликаты");
+        assertEquals(taskId, history.get(0).getId());
     }
 
     @Test
     void removeTaskFromMiddleOfHistory() {
         Task task1 = new Task("Task1", "Desc", Status.NEW);
-        task1.setId(1);
+        int task1Id = manager.createTask(task1);
         Task task2 = new Task("Task2", "Desc", Status.NEW);
-        task2.setId(2);
+        int task2Id = manager.createTask(task2);
         Task task3 = new Task("Task3", "Desc", Status.NEW);
-        task3.setId(3);
+        int task3Id = manager.createTask(task3);
 
-        historyManager.add(task1);
-        historyManager.add(task2);
-        historyManager.add(task3);
+        manager.getTask(task1Id);
+        manager.getTask(task2Id);
+        manager.getTask(task3Id);
 
-        historyManager.remove(2);
+        historyManager.remove(task2Id);
 
-        List<Task> history = historyManager.getHistory();
+        List<Task> history = manager.getHistory();
         assertAll(
-                () -> assertEquals(2, history.size()),
-                () -> assertEquals(1, history.getFirst().getId()),
-                () -> assertEquals(3, history.get(1).getId())
+                () -> assertEquals(2, history.size(), "Неверный размер истории"),
+                () -> assertEquals(task1Id, history.get(0).getId(), "Первая задача не совпадает"),
+                () -> assertEquals(task3Id, history.get(1).getId(), "Третья задача не на месте")
         );
     }
 
     @Test
     void historyPreservesOriginalTaskDataAfterModification() {
+        Task task = new Task("Original", "Desc", Status.NEW);
+        int taskId = manager.createTask(task);
 
-        Task originalTask = new Task("Task 1", "Description 1", Status.NEW);
-        originalTask.setId(1);
-        historyManager.add(originalTask);
+        manager.getTask(taskId);
+   
+        Task modifiedTask = new Task("Modified", "New Desc", Status.DONE);
+        modifiedTask.setId(taskId);
+        manager.updateTask(modifiedTask);
 
-        originalTask.setName("Modified Name");
-        originalTask.setDescription("Modified Description");
-        originalTask.setStatus(Status.IN_PROGRESS);
-
-        Task historyTask = historyManager.getHistory().getFirst();
-
-        assertEquals(1, historyTask.getId(), "ID задачи должен совпадать");
-        assertEquals("Task 1", historyTask.getName(), "Название не должно измениться");
-        assertEquals("Description 1", historyTask.getDescription(), "Описание не должно измениться");
-        assertEquals(Status.NEW, historyTask.getStatus(), "Статус должен остаться исходным");
+        Task historyTask = manager.getHistory().get(0);
+        assertAll(
+                () -> assertEquals(taskId, historyTask.getId()),
+                () -> assertEquals("Modified", historyTask.getName(), "Название должно обновиться в истории"),
+                () -> assertEquals("New Desc", historyTask.getDescription()),
+                () -> assertEquals(Status.DONE, historyTask.getStatus())
+        );
     }
 
     @Test
     void shouldRemoveTaskFromHistory() {
         Task task = new Task("Task", "Desc", Status.NEW);
-        task.setId(1);
-        historyManager.add(task);
+        int taskId = manager.createTask(task);
 
-        historyManager.remove(1);
+        manager.getTask(taskId); 
+        historyManager.remove(taskId);
 
-        if (!historyManager.getHistory().isEmpty()) {
-            throw new AssertionError("История должна быть пустой после удаления");
-        }
+        assertTrue(manager.getHistory().isEmpty(), "История не пуста после удаления");
     }
-
-}
 
 
 
