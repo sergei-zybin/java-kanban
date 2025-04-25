@@ -64,12 +64,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    public void clear() {
-        historyMap.clear();
-        head = null;
-        tail = null;
-    }
-
     @Override
     public List<Task> getHistory() {
         List<Task> result = new ArrayList<>();
