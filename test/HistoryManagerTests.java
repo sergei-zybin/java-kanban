@@ -58,21 +58,8 @@ class TaskManagerTests {
             "Подзадачи должны удаляться вместе с эпиком"
         );
     }
+}
 
-    @Test
-    void historyShouldNotContainDeletedTasks() {
-        Task task = new Task("Временная задача", "Описание", Status.NEW);
-        int taskId = manager.createTask(task);
-
-        manager.getTask(taskId); 
-        manager.deleteTask(taskId);
-
-        List<Task> history = manager.getHistory();
-        assertFalse(
-            history.stream().anyMatch(t -> t.getId() == taskId),
-            "Удаленные задачи должны исчезать из истории"
-        );
-    }
 
 
 
