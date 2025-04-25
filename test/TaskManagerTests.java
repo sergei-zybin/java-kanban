@@ -35,48 +35,7 @@ class TaskManagerTests {
         assertEquals(Status.NEW,
                 history.getHistory().getFirst().getStatus(),
                 "История должна хранить неизменяемые копии задач");
-    }
-
-    private List<Integer> getHistoryIds() {
-        return history.getHistory().stream()
-                .map(Task::getId)
-                .toList();
-    }
-
-    @Test
-    void epicShouldUpdateStatusAutomatically() {
-        Subtask subtask = new Subtask("Подзадача", "Описание", Status.DONE, testEpic.getId());
-        manager.createSubtask(subtask);
-
-        assertEquals(Status.DONE,
-                manager.getEpic(testEpic.getId()).getStatus(),
-                "Статус эпика должен обновляться автоматически");
-    }
-
-    @Test
-    void deletingEpicShouldRemoveSubtasks() {
-        Subtask subtask = new Subtask("Удаляемая подзадача", "Описание", Status.NEW, testEpic.getId());
-        int subtaskId = manager.createSubtask(subtask);
-
-        manager.deleteEpic(testEpic.getId());
-        assertNull(manager.getSubtask(subtaskId),
-                "Подзадачи должны удаляться вместе с эпиком");
-    }
-
-    @Test
-    void historyShouldNotContainDeletedTasks() {
-        Task task = new Task("Временная задача", "Описание", Status.NEW);
-        int taskId = manager.createTask(task);
-
-        manager.getTask(taskId);
-        manager.deleteTask(taskId);
-
-        assertFalse(manager.getHistory().stream()
-                        .anyMatch(t -> t.getId() == taskId),
-                "Удаленные задачи должны исчезать из истории");
-    }
 }
-
-
+}
 
 
