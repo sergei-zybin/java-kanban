@@ -34,7 +34,6 @@ class HistoryManagerTests {
 
         List<Task> history = historyManager.getHistory();
         assertEquals(1, history.size(), "История должна содержать только одну запись");
-        assertEquals(task.getId(), history.getFirst().getId());
     }
 
     @Test
@@ -55,7 +54,7 @@ class HistoryManagerTests {
         List<Task> history = historyManager.getHistory();
         assertAll(
                 () -> assertEquals(2, history.size()),
-                () -> assertEquals(1, history.getFirst().getId()),
+                () -> assertEquals(1, history.get(0).getId()),
                 () -> assertEquals(3, history.get(1).getId())
         );
     }

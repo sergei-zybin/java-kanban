@@ -16,8 +16,8 @@ class TaskManagerTests {
 
     @BeforeEach
     void setUp() {
-        manager = Managers.getDefault();
-        manager.clearAll();
+        historyManager = Managers.getDefaultHistory();
+        ((InMemoryHistoryManager) historyManager).clear();
     }
 
     @Test
