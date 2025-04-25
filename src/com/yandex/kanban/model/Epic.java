@@ -22,7 +22,7 @@ public class Epic extends Task {
     public void removeSubtask(int subtaskId) {
         subtaskIds.remove((Integer) subtaskId);
     }
-    
+
     @Override
     public Epic copy() {
         Epic copy = new Epic(this.getName(), this.getDescription());
@@ -35,8 +35,8 @@ public class Epic extends Task {
     @Override
     public String toString() {
         return String.format(
-                "Epic [id=%d, name='%s', description='%s', status=%s, subtaskIds=%s]",
-                getId(), getName(), getDescription(), getStatus(), subtaskIds
+            "Epic [id=%d, name='%s', description='%s', status=%s, subtaskIds=%s]",
+            getId(), getName(), getDescription(), getStatus(), subtaskIds
         );
     }
 }
