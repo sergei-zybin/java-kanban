@@ -23,6 +23,10 @@ public class Epic extends Task {
         subtaskIds.remove((Integer) subtaskId);
     }
 
+    public void clearSubtasks() {
+        subtaskIds.clear();
+    }
+
     @Override
     public Epic copy() {
         Epic copy = new Epic(this.getName(), this.getDescription());
