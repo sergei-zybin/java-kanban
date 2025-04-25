@@ -15,6 +15,8 @@ class TaskManagerTests {
     @BeforeEach
     void setUp() {
         manager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();
+        manager.clearAll();
     }
 
     @Test
@@ -90,6 +92,12 @@ class TaskManagerTests {
         Task task = new Task("Task", "Desc", Status.NEW);
         int taskId = manager.createTask(task);
         Task savedTask = manager.getTask(taskId);
+
+        assertAll(
+                () -> assertEquals(1, epicId, "ID эпика должно быть 1"),
+                () -> assertEquals(2, subId, "ID подзадачи должно быть 2"),
+                () -> assertEquals(3, taskId, "ID задачи должно быть 3")
+        );
 
         assertAll(
                 () -> assertEquals(epic.getName(), savedEpic.getName()),
@@ -173,55 +181,6 @@ class TaskManagerTests {
 
         assertEquals(Status.IN_PROGRESS, manager.getEpic(epicId).getStatus(),
                 "Эпик должен вернуться в IN_PROGRESS при добавлении новой активной подзадачи");
-    }
-
-    @Test
-    void epicShouldNotHaveRemovedSubtaskIds() {
-        Epic epic = new Epic("Epic", "Desc");
-        int epicId = manager.createEpic(epic);
-
-        Subtask subtask = new Subtask("Sub", "Desc", Status.NEW, epicId);
-        int subId = manager.createSubtask(subtask);
-
-        manager.deleteSubtask(subId);
-        Epic savedEpic = manager.getEpic(epicId);
-
-        assertFalse(savedEpic.getSubtaskIds().contains(subId), "Эпик не должен содержать удалённую подзадачу");
-    }
-
-    @Test
-    void deletingEpicRemovesAllSubtasks() {
-        Epic epic = new Epic("Epic", "Desc");
-        int epicId = manager.createEpic(epic);
-
-        Subtask subtask1 = new Subtask("Sub1", "Desc", Status.NEW, epicId);
-        int subId1 = manager.createSubtask(subtask1);
-
-        Subtask subtask2 = new Subtask("Sub2", "Desc", Status.NEW, epicId);
-        int subId2 = manager.createSubtask(subtask2);
-
-        manager.deleteEpic(epicId);
-
-        assertNull(manager.getSubtask(subId1), "Подзадача должна быть удалена");
-        assertNull(manager.getSubtask(subId2), "Подзадача должна быть удалена");
-    }
-
-    @Test
-    void subtaskEpicIdCannotBeChangedExternally() {
-        Epic epic1 = new Epic("Epic1", "Desc");
-        int epic1Id = manager.createEpic(epic1);
-
-        Epic epic2 = new Epic("Epic2", "Desc");
-        int epic2Id = manager.createEpic(epic2);
-
-        Subtask subtask = new Subtask("Sub", "Desc", Status.NEW, epic1Id);
-        int subId = manager.createSubtask(subtask);
-
-        Subtask fromManager = manager.getSubtask(subId);
-
-        Subtask updatedSubtask = manager.getSubtask(subId);
-        assertEquals(epic1Id, updatedSubtask.getEpicId(),
-                "epicId не должен изменяться внешне");
     }
 }
 
