@@ -13,8 +13,7 @@ class HistoryManagerTests {
     @BeforeEach
     void setUp() {
         manager = Managers.getDefault();
-        historyManager = Managers.getDefaultHistory();
-        manager.clearAll();
+        historyManager = Managers.getDefaultHistory();        
         for (Task task : historyManager.getHistory()) {
             historyManager.remove(task.getId());
         }
