@@ -27,6 +27,22 @@ class TaskManagerTests {
                 "Должна быть ошибка при конфликте ID");
     }
 
+     @Test
+    void taskInHistoryShouldBeImmutable() {
+        history.add(task1);
+        task1.setStatus(Status.DONE);
+
+        assertEquals(Status.NEW,
+                history.getHistory().getFirst().getStatus(),
+                "История должна хранить неизменяемые копии задач");
+    }
+
+    private List<Integer> getHistoryIds() {
+        return history.getHistory().stream()
+                .map(Task::getId)
+                .toList();
+    }
+
     @Test
     void epicShouldUpdateStatusAutomatically() {
         Subtask subtask = new Subtask("Подзадача", "Описание", Status.DONE, testEpic.getId());
