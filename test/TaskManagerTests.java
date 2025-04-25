@@ -14,7 +14,7 @@ class TaskManagerTests {
 
     @BeforeEach
     void setUp() {
-        manager = Managers.getDefault();
+        manager = Managers.getDefault();        
     }
 
     @Test
@@ -224,6 +224,3 @@ class TaskManagerTests {
                 "epicId не должен изменяться внешне");
     }
 }
-
-
-

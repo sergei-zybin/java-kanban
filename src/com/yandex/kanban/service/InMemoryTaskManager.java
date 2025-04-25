@@ -18,13 +18,16 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() {
-        tasks.clear();
+        for (Task task : tasks.values()) {
+            historyManager.remove(task.getId());
+        }
     }
 
-    @Override
-    public Task getTask(int id) { // Убрал избыточную проверку null
+    public Task getTask(int id) {
         Task task = tasks.get(id);
-        historyManager.addTask(task);
+        if (task != null) {
+            historyManager.add(task);
+        }
         return task;
     }
 
@@ -66,17 +69,15 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllSubtasks() {
-        subtasks.clear();
-        for (Epic epic : epics.values()) {
-            epic.getSubtaskIds().clear();
-            updateEpicStatus(epic);
+        for (Subtask subtask : subtasks.values()) {
+            historyManager.remove(subtask.getId());
         }
-    }
+            }
 
     @Override
     public Subtask getSubtask(int id) {
         Subtask subtask = subtasks.get(id);
-        historyManager.addTask(subtask);
+        historyManager.add(subtask);
         return subtask;
     }
 
@@ -142,14 +143,12 @@ public class InMemoryTaskManager implements TaskManager {
         for (Epic epic : epics.values()) {
             historyManager.remove(epic.getId());
         }
-        epics.clear();
-        subtasks.clear();
     }
 
     @Override
     public Epic getEpic(int id) {
         Epic epic = epics.get(id);
-        historyManager.addTask(epic);
+        historyManager.add(epic);
         return epic;
     }
 
@@ -199,14 +198,6 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getHistory();
     }
 
-    @Override
-    public void clearAll() {
-        tasks.clear();
-        subtasks.clear();
-        epics.clear();
-        nextId = 1;
-    }
-
     private void updateEpicStatus(Epic epic) {
         List<Integer> subtaskIds = epic.getSubtaskIds();
         if (subtaskIds.isEmpty()) {
@@ -234,4 +225,3 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 }
-

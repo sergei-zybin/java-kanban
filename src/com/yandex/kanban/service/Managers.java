@@ -1,6 +1,6 @@
 package com.yandex.kanban.service;
 
-public final class Managers { // Исправил, добавил конструктор Managers()
+public final class Managers {
 
     private Managers() {
         throw new UnsupportedOperationException("Утилитарный класс");
