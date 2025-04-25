@@ -1,4 +1,4 @@
-ackage com.yandex.kanban.service;
+package com.yandex.kanban.service;
 
 import com.yandex.kanban.model.*;
 import org.junit.jupiter.api.BeforeEach;
