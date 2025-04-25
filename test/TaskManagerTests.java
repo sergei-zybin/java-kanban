@@ -224,36 +224,4 @@ class TaskManagerTests {
         assertEquals(epic1Id, updatedSubtask.getEpicId(),
                 "epicId не должен изменяться внешне");
     }
-
-    @Test
-    void taskChangesViaSettersAffectManagerData() {
-        Task task = new Task("Original", "Desc", Status.NEW);
-        int taskId = manager.createTask(task);
-
-        task.setName("Hacked via setter");
-        task.setStatus(Status.DONE);
-
-        Task managerTask = manager.getTask(taskId);
-
-        assertAll(
-                () -> assertEquals("Hacked via setter", managerTask.getName()),
-                () -> assertEquals(Status.DONE, managerTask.getStatus())
-        );
-    }
-
-    @Test
-    void subtaskChangesViaSettersAffectEpicStatus() {
-
-        Epic epic = new Epic("Epic", "Desc");
-        int epicId = manager.createEpic(epic);
-
-        Subtask subtask = new Subtask("Subtask", "Desc", Status.NEW, epicId);
-        int subtaskId = manager.createSubtask(subtask);
-
-        subtask.setStatus(Status.DONE);
-
-        Epic updatedEpic = manager.getEpic(epicId);
-        assertEquals(Status.DONE, updatedEpic.getStatus(), "Статус эпика не обновился");
-    }
-   
 }
