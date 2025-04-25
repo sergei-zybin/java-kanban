@@ -59,23 +59,25 @@ class HistoryManagerTests {
 
     @Test
     void historyPreservesOriginalTaskDataAfterModification() {
-        Task task = new Task("Original", "Desc", Status.NEW);
-        int taskId = manager.createTask(task);
 
-        manager.getTask(taskId);
-   
-        Task modifiedTask = new Task("Modified", "New Desc", Status.DONE);
-        modifiedTask.setId(taskId);
-        manager.updateTask(modifiedTask);
+    Task original = new Task("Original", "Desc", Status.NEW);
+    int taskId = manager.createTask(original);
+    
+    Task savedTask = manager.getTask(taskId);
+        
+    savedTask.setName("Modified");
+    savedTask.setDescription("New Desc");
+    savedTask.setStatus(Status.DONE);
+    
+    Task historyTask = manager.getHistory().get(0);
+      
+    assertAll(
+        () -> assertEquals("Original", historyTask.getName(), "Название изменилось в истории!"),
+        () -> assertEquals("Desc", historyTask.getDescription(), "Описание изменилось в истории!"),
+        () -> assertEquals(Status.NEW, historyTask.getStatus(), "Статус изменился в истории!")
+    );
+}
 
-        Task historyTask = manager.getHistory().get(0);
-        assertAll(
-                () -> assertEquals(taskId, historyTask.getId()),
-                () -> assertEquals("Modified", historyTask.getName(), "Название должно обновиться в истории"),
-                () -> assertEquals("New Desc", historyTask.getDescription()),
-                () -> assertEquals(Status.DONE, historyTask.getStatus())
-        );
-    }
 
     @Test
     void shouldRemoveTaskFromHistory() {
