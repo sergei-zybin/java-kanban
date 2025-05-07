@@ -1,5 +1,7 @@
 package com.yandex.kanban.service;
 
+import java.io.File;
+
 public final class Managers {
 
     private Managers() {
@@ -15,5 +17,9 @@ public final class Managers {
 
     public static HistoryManager getDefaultHistory() {
         return DEFAULT_HISTORY_MANAGER;
+    }
+
+    public static TaskManager getFileBacked(String path) {
+        return new FileBackedTaskManager(new File(path));
     }
 }

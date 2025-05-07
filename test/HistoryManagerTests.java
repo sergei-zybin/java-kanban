@@ -3,7 +3,7 @@ package com.yandex.kanban.service;
 import com.yandex.kanban.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.List; 
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HistoryManagerTests {
@@ -13,7 +13,7 @@ class HistoryManagerTests {
     @BeforeEach
     void setUp() {
         manager = Managers.getDefault();
-        historyManager = Managers.getDefaultHistory();        
+        historyManager = Managers.getDefaultHistory();
         for (Task task : historyManager.getHistory()) {
             historyManager.remove(task.getId());
         }
@@ -59,23 +59,23 @@ class HistoryManagerTests {
     @Test
     void historyPreservesOriginalTaskDataAfterModification() {
 
-    Task original = new Task("Original", "Desc", Status.NEW);
-    int taskId = manager.createTask(original);
-    
-    Task savedTask = manager.getTask(taskId);
-        
-    savedTask.setName("Modified");
-    savedTask.setDescription("New Desc");
-    savedTask.setStatus(Status.DONE);
-    
-    Task historyTask = manager.getHistory().get(0);
-      
-    assertAll(
-        () -> assertEquals("Original", historyTask.getName(), "Название изменилось в истории!"),
-        () -> assertEquals("Desc", historyTask.getDescription(), "Описание изменилось в истории!"),
-        () -> assertEquals(Status.NEW, historyTask.getStatus(), "Статус изменился в истории!")
-    );
-}
+        Task original = new Task("Original", "Desc", Status.NEW);
+        int taskId = manager.createTask(original);
+
+        Task savedTask = manager.getTask(taskId);
+
+        savedTask.setName("Modified");
+        savedTask.setDescription("New Desc");
+        savedTask.setStatus(Status.DONE);
+
+        Task historyTask = manager.getHistory().get(0);
+
+        assertAll(
+                () -> assertEquals("Original", historyTask.getName(), "Название изменилось в истории!"),
+                () -> assertEquals("Desc", historyTask.getDescription(), "Описание изменилось в истории!"),
+                () -> assertEquals(Status.NEW, historyTask.getStatus(), "Статус изменился в истории!")
+        );
+    }
 
 
     @Test
@@ -83,11 +83,9 @@ class HistoryManagerTests {
         Task task = new Task("Task", "Desc", Status.NEW);
         int taskId = manager.createTask(task);
 
-        manager.getTask(taskId); 
+        manager.getTask(taskId);
         historyManager.remove(taskId);
 
         assertTrue(manager.getHistory().isEmpty(), "История не пуста после удаления");
     }
 }
-
-
