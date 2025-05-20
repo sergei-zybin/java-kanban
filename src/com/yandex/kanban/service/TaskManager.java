@@ -3,7 +3,10 @@ package com.yandex.kanban.service;
 import com.yandex.kanban.model.Epic;
 import com.yandex.kanban.model.Subtask;
 import com.yandex.kanban.model.Task;
+
 import java.util.List;
+import java.util.Optional;
+
 
 public interface TaskManager {
 
@@ -11,7 +14,7 @@ public interface TaskManager {
 
     void deleteAllTasks();
 
-    Task getTask(int id);
+    Optional<Task> getTask(int id);
 
     int createTask(Task task);
 
@@ -24,7 +27,7 @@ public interface TaskManager {
 
     void deleteAllSubtasks();
 
-    Subtask getSubtask(int id);
+    Optional<Subtask> getSubtask(int id);;
 
     Integer createSubtask(Subtask subtask);
 
@@ -37,7 +40,7 @@ public interface TaskManager {
 
     void deleteAllEpics();
 
-    Epic getEpic(int id);
+    Optional<Epic> getEpic(int id);
 
     int createEpic(Epic epic);
 
@@ -50,4 +53,5 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
+    List<Task> getPrioritizedTasks();
 }
