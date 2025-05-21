@@ -1,2 +1,8 @@
 Привет!
-Сделал новый функционал по сохранению/загрузке из CSV.
+Спасибо за правки!
+
+Добавил удаление из prioritizedTasks в методах:
+deleteAllTasks
+deleteAllSubtasks
+deleteAllEpics
+deleteEpic
