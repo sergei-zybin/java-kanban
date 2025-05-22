@@ -15,11 +15,11 @@ public final class Managers {
         return DEFAULT_TASK_MANAGER;
     }
 
-    public static HistoryManager getDefaultHistory() {
-        return DEFAULT_HISTORY_MANAGER;
+    public static TaskManager getDefault(String path) {
+        return new FileBackedTaskManager(new File(path));
     }
 
-    public static TaskManager getFileBacked(String path) {
-        return new FileBackedTaskManager(new File(path));
+    public static HistoryManager getDefaultHistory() {
+        return DEFAULT_HISTORY_MANAGER;
     }
 }
