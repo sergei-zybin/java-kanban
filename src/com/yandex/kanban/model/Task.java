@@ -11,7 +11,7 @@ public class Task {
     private Status status;
     private LocalDateTime startTime;
     private Duration duration;
-
+    
     public Task(String name, String description, Status status) {
         this(name, description, status, null, null);
     }
@@ -22,6 +22,10 @@ public class Task {
         this.status = status;
         this.startTime = startTime;
         this.duration = duration;
+    }
+
+    public Task(String name, String description) {
+        this(name, description, Status.NEW);
     }
 
     @Override

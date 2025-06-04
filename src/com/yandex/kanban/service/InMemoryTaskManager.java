@@ -28,7 +28,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllTasks() {
         for (Task task : tasks.values()) {
             historyManager.remove(task.getId());
-            prioritizedTasks.remove(task); // Добавил удаление из prioritizedTasks
+            prioritizedTasks.remove(task);
         }
         tasks.clear();
     }
@@ -102,7 +102,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubtasks() {
         for (Subtask subtask : subtasks.values()) {
             historyManager.remove(subtask.getId());
-            prioritizedTasks.remove(subtask); // Добавил удаление из prioritizedTasks
+            prioritizedTasks.remove(subtask);
         }
         subtasks.clear();
         for (Epic epic : epics.values()) {
@@ -205,7 +205,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllEpics() {
         for (Subtask subtask : subtasks.values()) {
             historyManager.remove(subtask.getId());
-            prioritizedTasks.remove(subtask); // Добавил удаление из prioritizedTasks
+            prioritizedTasks.remove(subtask);
         }
         for (Epic epic : epics.values()) {
             historyManager.remove(epic.getId());
@@ -247,7 +247,7 @@ public class InMemoryTaskManager implements TaskManager {
             for (int subtaskId : epic.getSubtaskIds()) {
                 Subtask subtask = subtasks.remove(subtaskId);
                 if (subtask != null) {
-                    prioritizedTasks.remove(subtask); // Добавил удаление из prioritizedTasks
+                    prioritizedTasks.remove(subtask);
                     historyManager.remove(subtaskId);
                 }
             }
