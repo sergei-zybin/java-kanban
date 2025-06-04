@@ -45,8 +45,7 @@ public class EpicsHandler extends BaseHttpHandler {
         if (path.equals("/epics")) {
             String json = gson.toJson(manager.getAllEpics());
             sendResponse(exchange, json, 200);
-        }
-        else if (path.contains("/subtasks")) {
+        } else if (path.contains("/subtasks")) {
             try {
                 String basePath = path.substring(0, path.indexOf("/subtasks"));
                 basePath = normalizePath(basePath);
@@ -63,8 +62,7 @@ public class EpicsHandler extends BaseHttpHandler {
             } catch (BadRequestFormatException e) {
                 sendBadRequest(exchange, e.getMessage());
             }
-        }
-        else {
+        } else {
             try {
                 int id = parsePathId(path);
                 Optional<Epic> epic = manager.getEpic(id);
