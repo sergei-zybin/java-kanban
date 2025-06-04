@@ -11,7 +11,7 @@ public class Task {
     private Status status;
     private LocalDateTime startTime;
     private Duration duration;
-    
+
     public Task(String name, String description, Status status) {
         this(name, description, status, null, null);
     }
