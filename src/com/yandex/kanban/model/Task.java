@@ -24,6 +24,10 @@ public class Task {
         this.duration = duration;
     }
 
+    public Task(String name, String description) {
+        this(name, description, Status.NEW);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

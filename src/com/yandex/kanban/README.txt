@@ -1,8 +1,4 @@
-Привет!
-Спасибо за правки!
+Патимат, привет!
 
-Добавил удаление из prioritizedTasks в методах:
-deleteAllTasks
-deleteAllSubtasks
-deleteAllEpics
-deleteEpic
+Все новые тесты (для серверной части) сгрузил в общую папку к старым, надеюсь -- это ок!
+

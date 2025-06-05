@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = Managers.getDefault("tasks.csv");
+        TaskManager manager = Managers.getFileBacked();
 
         System.out.println("+++ Создание объектов +++");
         Task foundation = new Task("Закладка фундамента", "Бетонная заливка", Status.IN_PROGRESS,
